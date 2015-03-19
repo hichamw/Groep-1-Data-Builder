@@ -1,20 +1,16 @@
-import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 
 public class Data {
-	private static ArrayList <String> data = new ArrayList <String>();
-	private static ResultSet result;
-	private static PreparedStatement statement;
+	private  ResultSet result;
+	private Database database = new Database();
+	private String query; 
 	
-	public static void extractDataFromDatabase() throws SQLException {
-		statement = Controller.conn.prepareStatement("SELECT Language FROM Twitter");		
-		result = statement.executeQuery();
+	public void extractDataFromDatabase() throws SQLException {
+		query = "SELECT Language FROM Twitter";
+		result = database.retrieveData(query);
 		int nl = 0;
 		int en = 0;
 		int ru = 0;
