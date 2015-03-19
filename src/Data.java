@@ -9,7 +9,7 @@ public class Data {
 	private String query; 
 	
 	public void extractDataFromDatabase() throws SQLException {
-		query = "SELECT Language FROM Twitter";
+		query = "SELECT Lang FROM Twitter";
 		result = database.retrieveData(query);
 		int nl = 0;
 		int en = 0;
