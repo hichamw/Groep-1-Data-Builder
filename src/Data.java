@@ -1,38 +1,45 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-
+import java.util.ArrayList;
 
 public class Data {
-	private  ResultSet result;
-	private String query; 
-	
+	private ResultSet result;
+	private String query;
+	private ArrayList<Language> languageList = new ArrayList<Language>();
+	private ArrayList<String> info = new ArrayList<String>();
+
 	public void extractDataFromDatabase(Database database) throws SQLException {
 		query = "SELECT Language FROM Twitter";
 		result = database.retrieveData(query);
-		int nl = 0;
-		int en = 0;
-		int ru = 0;
-		while(result.next()){
-			// result.getString() extract een column naar keuze uit onze Twitter database.
-			// column 1 = Username column 2 = Name etc.		
-			if(result.getString(1).equals("nl")){
-				nl++;
-			}
-			if(result.getString(1).equals("en")){
-				en++;
-			}
-			if(result.getString(1).equals("ru")){
-				ru++;
-			}
-			}
-			System.out.println("NL " + nl);
-			System.out.println("EN " + en);
-			System.out.println("RU " + ru);
+		
+		while (result.next()) {
+			info.add(result.getString(1));
 		}
 
-		
+		for (String lang : info) {
+			boolean exists = false;
+			for (Language langObject : languageList) {
+				if (lang.equals(langObject.getName())) {
+					langObject.increment();
+					exists = true;
+				}
+			}
+			if (!exists) {
+				Language language = new Language();
+				language.setName(lang);
+				language.setCount(1);
+				languageList.add(language);
 
-		
+			}
+
+		}
+
+		for(Language langObject : languageList){
+			System.out.println(langObject.getName());
+			System.out.println(langObject.getCount());
+			System.out.println();
+		}
+
+	}
+
 }
-

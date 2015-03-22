@@ -8,7 +8,7 @@ public class Controller {
 		Client client = new Client();
 		Database database = new Database();
 		database.connectToDatabase();
-		//data.extractDataFromDatabase(database);
+		data.extractDataFromDatabase(database);
 		client.extractDataFromDatabase(database);
 
 	}
