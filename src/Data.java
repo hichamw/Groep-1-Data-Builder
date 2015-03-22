@@ -5,11 +5,10 @@ import java.sql.SQLException;
 
 public class Data {
 	private  ResultSet result;
-	private Database database = new Database();
 	private String query; 
 	
-	public void extractDataFromDatabase() throws SQLException {
-		query = "SELECT Lang FROM Twitter";
+	public void extractDataFromDatabase(Database database) throws SQLException {
+		query = "SELECT Language FROM Twitter";
 		result = database.retrieveData(query);
 		int nl = 0;
 		int en = 0;

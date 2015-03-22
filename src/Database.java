@@ -13,10 +13,10 @@ public class Database {
 	private ResultSet result;
 	
 	public void connectToDatabase(){
-		String host = "145.24.222.208";
-		String DBName = "dataminers";
-		String user = "client";
-		String password = "databuilder";
+		String host = "sql3.freemysqlhosting.net";
+		String DBName = "sql369437";
+		String user = "sql369437";
+		String password = "yH1%hH1*";
 		String encPassword = URLEncoder.encode(password);
 		try {
             conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
