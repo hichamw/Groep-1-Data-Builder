@@ -10,7 +10,7 @@ public class Client {
 	private String[] rawData;
 	private ArrayList<String> info = new ArrayList<String>();
 
-	public void extractDataFromDatabase(Database database) throws SQLException {
+	public void extractHashtagsFromDatabase(Database database) throws SQLException {
 		query = "SELECT Content FROM Twitter WHERE Content LIKE '%#%'";
 		result = database.retrieveData(query);
 
