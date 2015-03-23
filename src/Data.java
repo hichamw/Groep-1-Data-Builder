@@ -38,17 +38,15 @@ public class Data {
 
 		}
 
-		for (Language langObject : languageList) {
-			// System.out.println(langObject.getName());
-			// System.out.println(langObject.getCount());
-			// System.out.println();
-			PieChartLang.main(null);
-
-		}
-
 	}
+	public void RunThePie(Database database) throws SQLException{
+		extractLanguagesFromDatabase(database);
+		PieChartLang.main(null);
+	}
+	
 
 	public static PieDataset createDataset() {
+		//TODO fix data, piechart is wrong
 		for (String lang : info) {
 			int nl = 0;
 			int en = 0;
@@ -62,18 +60,23 @@ public class Data {
 			for (Language langObject : languageList) {
 				if (lang.equals("nl")) {
 					nl = langObject.getCount();
+					System.out.println("a" + nl);
 				}
 				if (lang.equals("en")) {
 					en = langObject.getCount();
+					System.out.println("b" + en);
 				}
 				if (lang.equals("es")) {
 					es = langObject.getCount();
+					System.out.println("c" + es );
 				}
 				if (lang.equals("ru")) {
 					ru = langObject.getCount();
+					System.out.println("d" + ru);
 				}
 			}
 			total = nl + en + es + ru;
+			System.out.println("e" + total);
 			 nlPercent = nl/total*100;
 			 enPercent = en/total*100;
 			 esPercent = es/total*100;

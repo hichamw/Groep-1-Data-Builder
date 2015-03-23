@@ -40,17 +40,6 @@ public class PieChartLang extends JFrame {
      * Creates a sample dataset 
      */
 
-    private  PieDataset createDataset() {
-        DefaultPieDataset result = new DefaultPieDataset();
-        result.setValue("Nederlands", 25);
-        result.setValue("Engels", 25);
-        result.setValue("Spaans", 25);
-        result.setValue("Russisch", 25);
-
-        return result;
-        
-    }
-    
     
 /**
      * Creates a chart

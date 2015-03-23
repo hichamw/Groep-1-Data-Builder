@@ -24,6 +24,10 @@ public class Controller {
 			{
 				client.extractHashtagsFromDatabase(database);
 			}
+			else if(menuOption.equals("4"))
+			{
+				data.RunThePie(database);
+			}
 			}while(menuOption.equals("3") == false);
 
 	
