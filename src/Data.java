@@ -8,13 +8,14 @@ import org.jfree.data.general.PieDataset;
 public class Data {
 	private ResultSet result;
 	private String query;
-	public ArrayList<Language> languageList = new ArrayList<Language>();
-	public ArrayList<String> info = new ArrayList<String>();
+	public static ArrayList<Language> languageList = new ArrayList<Language>();
+	public static ArrayList<String> info = new ArrayList<String>();
 
-	public void extractLanguagesFromDatabase(Database database) throws SQLException {
+	public void extractLanguagesFromDatabase(Database database)
+			throws SQLException {
 		query = "SELECT Language FROM Twitter";
 		result = database.retrieveData(query);
-		
+
 		while (result.next()) {
 			info.add(result.getString(1));
 		}
@@ -37,31 +38,56 @@ public class Data {
 
 		}
 
-		for(Language langObject : languageList){
-			//System.out.println(langObject.getName());
-			//System.out.println(langObject.getCount());
-			//System.out.println();
-			//PieChartLang.main(null);
-			
-	}
+		for (Language langObject : languageList) {
+			// System.out.println(langObject.getName());
+			// System.out.println(langObject.getCount());
+			// System.out.println();
+			PieChartLang.main(null);
+
+		}
 
 	}
-	public DefaultPieDataset createDataset() {
+
+	public static PieDataset createDataset() {
 		for (String lang : info) {
+			int nl = 0;
+			int en = 0;
+			int es = 0;
+			int ru = 0;
+			int total = 0;
+			int nlPercent = 0;
+			int enPercent = 0;
+			int esPercent = 0;
+			int ruPercent = 0;
 			for (Language langObject : languageList) {
 				if (lang.equals("nl")) {
-					int nl = langObject.getCount();
-					System.out.println(nl);
+					nl = langObject.getCount();
 				}
-				}}
-        DefaultPieDataset result = new DefaultPieDataset();
-        result.setValue("Nederlands", 25);
-        result.setValue("Engels", 25);
-        result.setValue("Spaans", 25);
-        result.setValue("Russisch", 25);
+				if (lang.equals("en")) {
+					en = langObject.getCount();
+				}
+				if (lang.equals("es")) {
+					es = langObject.getCount();
+				}
+				if (lang.equals("ru")) {
+					ru = langObject.getCount();
+				}
+			}
+			total = nl + en + es + ru;
+			 nlPercent = nl/total*100;
+			 enPercent = en/total*100;
+			 esPercent = es/total*100;
+			 ruPercent = ru/total*100;
 
-        return result;
-        
+			DefaultPieDataset result = new DefaultPieDataset();
+			result.setValue("Nederlands", nlPercent);
+			result.setValue("Engels", enPercent);
+			result.setValue("Spaans", esPercent);
+			result.setValue("Russisch", ruPercent);
+
+			return result;
 		}
-	
+		return null;
+	}
+
 }
