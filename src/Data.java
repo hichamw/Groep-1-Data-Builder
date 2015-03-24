@@ -8,10 +8,11 @@ public class Data {
 	private ArrayList<Language> languageList = new ArrayList<Language>();
 	private ArrayList<String> info = new ArrayList<String>();
 
-	public void extractLanguagesFromDatabase(Database database) throws SQLException {
+	public void extractLanguagesFromDatabase(Database database)
+			throws SQLException {
 		query = "SELECT Language FROM Twitter";
 		result = database.retrieveData(query);
-		
+
 		while (result.next()) {
 			info.add(result.getString(1));
 		}
@@ -34,17 +35,19 @@ public class Data {
 
 		}
 		WriteLanguages();
-		
-		}
 
-	
-	public void WriteLanguages(){
-		for(Language langObject : languageList){
+	}
+
+	public void WriteLanguages() {
+		for (Language langObject : languageList) {
 			System.out.println(langObject.getName());
 			System.out.println(langObject.getCount());
 			System.out.println();
-	}
-	
+		}
 
 	}
+
+	public ArrayList getLanguageList() {
+		return languageList;
 	}
+}
