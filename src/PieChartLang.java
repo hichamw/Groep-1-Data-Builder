@@ -12,12 +12,6 @@ import org.jfree.util.Rotation;
 
 public class PieChartLang extends JFrame {
 	  
-	public static  void main(String[] args) {
-	        PieChartLang demo = new PieChartLang("Talen", "Welke taal tweet het meest?");
-	        demo.pack();
-	        demo.setVisible(true);
-	  }
-
   private static final long serialVersionUID = 1L;
 
   public PieChartLang(String applicationTitle, String chartTitle) {

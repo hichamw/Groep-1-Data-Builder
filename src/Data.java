@@ -41,7 +41,9 @@ public class Data {
 	}
 	public void RunThePie(Database database) throws SQLException{
 		extractLanguagesFromDatabase(database);
-		PieChartLang.main(null);
+		PieChartLang demo = new PieChartLang("Talen", "Welke taal tweet het meest?");
+        demo.pack();
+        demo.setVisible(true);
 	}
 	
 
@@ -62,15 +64,15 @@ public class Data {
 					nl = langObject.getCount();
 					System.out.println("a" + nl);
 				}
-				if (lang.equals("en")) {
+				else if (lang.equals("en")) {
 					en = langObject.getCount();
 					System.out.println("b" + en);
 				}
-				if (lang.equals("es")) {
+				else if (lang.equals("es")) {
 					es = langObject.getCount();
 					System.out.println("c" + es );
 				}
-				if (lang.equals("ru")) {
+				else if (lang.equals("ru")) {
 					ru = langObject.getCount();
 					System.out.println("d" + ru);
 				}
