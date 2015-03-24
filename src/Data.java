@@ -33,13 +33,18 @@ public class Data {
 			}
 
 		}
+		WriteLanguages();
+		
+		}
 
+	
+	public void WriteLanguages(){
 		for(Language langObject : languageList){
 			System.out.println(langObject.getName());
 			System.out.println(langObject.getCount());
 			System.out.println();
-		}
+	}
+	
 
 	}
-
-}
+	}
