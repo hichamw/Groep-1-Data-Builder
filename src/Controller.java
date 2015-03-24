@@ -5,6 +5,7 @@ public class Controller {
 
 
 	public static void main(String[] args) throws SQLException {
+		Scanner scanMenu = new Scanner(System.in);
 		Scanner menu = new Scanner(System.in);
 		String menuOption;
 		Data data = new Data();
@@ -23,10 +24,6 @@ public class Controller {
 			}else if(menuOption.equals("2"))
 			{
 				client.extractHashtagsFromDatabase(database);
-			}
-			else if(menuOption.equals("4"))
-			{
-				data.RunThePie(database);
 			}
 			}while(menuOption.equals("3") == false);
 

@@ -3,10 +3,5 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.34-bin.jar"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="D:/SCHOOL/github school/Groep-1-Data-Builder/lib/jfreechart-1.0.19/jfreechart-1.0.19-demo.jar" sourcepath="D:/SCHOOL/github school/Groep-1-Data-Builder/lib/jfreechart-1.0.19/source"/>
-	<classpathentry kind="lib" path="D:/SCHOOL/github school/Groep-1-Data-Builder/lib/jcommon-1.0.8/jcommon-1.0.8.jar" sourcepath="D:/SCHOOL/github school/Groep-1-Data-Builder/lib/jcommon-1.0.8/source"/>
-=======
->>>>>>> parent of 681d4de... added pie chart class, small test in data.java met de gegevens ophalen
 	<classpathentry kind="output" path="bin"/>
 </classpath>
