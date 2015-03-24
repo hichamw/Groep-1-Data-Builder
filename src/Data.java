@@ -2,14 +2,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
-
 public class Data {
 	private ResultSet result;
 	private String query;
+<<<<<<< HEAD
 	public static ArrayList<Language> languageList = new ArrayList<Language>();
 	public static ArrayList<String> info = new ArrayList<String>();
+=======
+	private ArrayList<Language> languageList = new ArrayList<Language>();
+	private ArrayList<String> info = new ArrayList<String>();
+>>>>>>> parent of 681d4de... added pie chart class, small test in data.java met de gegevens ophalen
 
 	public void extractLanguagesFromDatabase(Database database)
 			throws SQLException {
@@ -38,6 +40,7 @@ public class Data {
 
 		}
 
+<<<<<<< HEAD
 	}
 	public void RunThePie(Database database) throws SQLException{
 		extractLanguagesFromDatabase(database);
@@ -96,3 +99,14 @@ public class Data {
 	}
 
 }
+=======
+		for(Language langObject : languageList){
+			System.out.println(langObject.getName());
+			System.out.println(langObject.getCount());
+			System.out.println();
+		}
+
+	}
+
+}
+>>>>>>> parent of 681d4de... added pie chart class, small test in data.java met de gegevens ophalen
