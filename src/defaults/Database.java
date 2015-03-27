@@ -39,9 +39,13 @@ public class Database {
 		connectToDatabase();
 		statement = conn.prepareStatement(query);		
 		result = statement.executeQuery();
-		conn.close();
 		return result;
 		
+	}
+	
+	public void closeConnection() throws SQLException{
+		
+		conn.close();
 	}
 
 }

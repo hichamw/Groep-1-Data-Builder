@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -42,15 +43,20 @@ public class MainWindow implements Initializable {
 	private ImageView refreshImage;
 	@FXML
 	private TextArea recentTweets;
-	
+	@FXML
+	private TableView dbTable;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		logoutImage.setImage(new Image("/img/logout.png"));
 		refreshImage.setImage(new Image("/img/refresh.png"));
-		recentTweets.setText(String.format("te %n st"));
 		fillTreeView();
 		createTreeViewEvent();
+		try {
+			retrieveTweets();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 			
 	}
@@ -58,6 +64,23 @@ public class MainWindow implements Initializable {
 	
 	
 	
+	public void retrieveTweets() throws SQLException {
+		Database database = new Database();
+		String query = "SELECT * FROM message ORDER BY Date DESC LIMIT 10";
+		ResultSet result = database.retrieveData(query);
+		while(result.next()){
+			recentTweets.setText( recentTweets.getText() + "<" + result.getString(1) + "> " + result.getString(3) + ": " + result.getString(2) + "\n");	
+		}
+		
+		database.closeConnection();
+		result.close();
+		
+		
+	}
+
+
+
+
 	@SuppressWarnings("unchecked")
 	public void fillTreeView(){
 		sideMenu.setStyle("-fx-border-style: none; -fx-background-color:transparent;");
@@ -120,6 +143,7 @@ public class MainWindow implements Initializable {
 					tabTitle.setText("Table view");
 					sideMenu.setPrefHeight(440);
 					recentTweets.setVisible(true);
+					dbTable.setVisible(true);
 					break;
 					
 				case 4: case 5: case 6: case 7:
@@ -127,6 +151,7 @@ public class MainWindow implements Initializable {
 					tabTitle.setText("Language Statistics");
 					recentTweets.setVisible(false);
 					sideMenu.setPrefHeight(600);
+					dbTable.setVisible(false);
 					break;
 					
 				case 8: case 9: case 10: case 11:
@@ -134,6 +159,7 @@ public class MainWindow implements Initializable {
 					tabTitle.setText("Tweet Statistics");
 					recentTweets.setVisible(false);
 					sideMenu.setPrefHeight(600);
+					dbTable.setVisible(false);
 					break;
 					
 				case 12: case 13: case 14: case 15:
@@ -141,6 +167,7 @@ public class MainWindow implements Initializable {
 					tabTitle.setText("Hashtag Statistics");
 					recentTweets.setVisible(false);
 					sideMenu.setPrefHeight(600);
+					dbTable.setVisible(false);
 					break;
 
 				}
@@ -155,8 +182,8 @@ public class MainWindow implements Initializable {
 		this.parent = stage;	
 	}
 	
-	public void refresh(){
-		System.out.println("test");
+	public void refresh() throws SQLException{
+		retrieveTweets();
 		
 	}
 	
