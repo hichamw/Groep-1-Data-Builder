@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventListeners.MainWindow">
+   <children>
+      <TreeView fx:id="sideMenu" layoutY="-1.0" prefHeight="441.0" prefWidth="167.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="20.0" layoutX="167.0" stroke="BLACK" strokeType="INSIDE" width="633.0" />
+      <Text fx:id="tabTitle" layoutX="417.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hashtag Statistics" />
+      <ImageView fx:id="logoutImage" fitHeight="14.0" fitWidth="14.0" layoutX="782.0" layoutY="3.0" onMouseClicked="#logOut" pickOnBounds="true" preserveRatio="true" />
+      <Line endX="5.0" endY="-20.0" layoutX="773.0" layoutY="19.0" startX="5.0" />
+      <Line endX="-30.0" endY="-30.0" layoutX="783.0" layoutY="29.0" startX="-30.0" startY="-10.0" />
+      <ImageView fx:id="refreshImage" fitHeight="14.0" fitWidth="14.0" layoutX="759.0" layoutY="3.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true" />
+      <TextArea fx:id="recentTweets" editable="false" layoutY="440.0" prefHeight="159.0" prefWidth="800.0" />
+   </children>
+</AnchorPane>

@@ -1,3 +1,4 @@
+package defaults;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,8 +9,7 @@ public class Data {
 	private ArrayList<Language> languageList = new ArrayList<Language>();
 	private ArrayList<String> info = new ArrayList<String>();
 
-	public void extractLanguagesFromDatabase(Database database)
-			throws SQLException {
+	public void extractLanguagesFromDatabase(Database database) throws SQLException {
 		query = "SELECT Language FROM Twitter";
 		result = database.retrieveData(query);
 
@@ -47,7 +47,7 @@ public class Data {
 
 	}
 
-	public ArrayList getLanguageList() {
+	public ArrayList<Language> getLanguageList() {
 		return languageList;
 	}
 }

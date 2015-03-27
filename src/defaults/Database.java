@@ -1,3 +1,4 @@
+package defaults;
 import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,10 +14,10 @@ public class Database {
 	private ResultSet result;
 	
 	public void connectToDatabase(){
-		String host = "sql3.freemysqlhosting.net";
-		String DBName = "sql369437";
-		String user = "sql369437";
-		String password = "yH1%hH1*";
+		String host = "145.24.222.208:8124";
+		String DBName = "dataminers";
+		String user = "Client";
+		String password = "databuilder";
 		String encPassword = URLEncoder.encode(password);
 		try {
             conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
@@ -35,10 +36,11 @@ public class Database {
 	
 	public ResultSet retrieveData(String query) throws SQLException{
 		
+		connectToDatabase();
 		statement = conn.prepareStatement(query);		
 		result = statement.executeQuery();
+		conn.close();
 		return result;
-		
 		
 	}
 

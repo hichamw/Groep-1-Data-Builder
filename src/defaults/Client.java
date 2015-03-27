@@ -1,3 +1,4 @@
+package defaults;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,11 +17,6 @@ public class Client {
 
 		try {
 			while (result.next()) {
-				// result.getString() extract een column naar keuze uit onze
-				// Twitter database.
-				// column 1 = Username column 2 = Name etc.
-				// String[] info = new String[1];
-
 				rawData = result.getString(1).split("[\\s]");
 				for (int i = 0; i < rawData.length; i++) {
 					info.add(rawData[i]);
