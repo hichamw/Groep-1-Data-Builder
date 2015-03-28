@@ -16,9 +16,6 @@ public class Controller extends Application {
 		launch(args);
 
 
-
-		
-	
 		
 	}
 
