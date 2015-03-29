@@ -13,6 +13,9 @@ public class Controller extends Application {
 
 
 	public static void main(String[] args) throws SQLException {
+		//Database database = new Database();
+		//Time time = new Time();
+		//time.extractTimeFromDatabase(database);
 		launch(args);
 
 

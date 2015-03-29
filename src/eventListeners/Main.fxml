@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
@@ -10,24 +11,30 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventListeners.MainWindow">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventListeners.MainWindow">
    <children>
-      <TreeView fx:id="sideMenu" layoutY="-1.0" prefHeight="441.0" prefWidth="167.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="20.0" layoutX="167.0" stroke="BLACK" strokeType="INSIDE" width="633.0" />
-      <Text fx:id="tabTitle" layoutX="425.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hashtag Statistics">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" layoutX="170.0" stroke="BLACK" strokeType="INSIDE" width="1030.0" />
+      <TreeView fx:id="menuTree" layoutY="-1.0" prefHeight="640.0" prefWidth="170.0" />
+      <Text fx:id="tabTitle" layoutX="599.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hashtag Statistics">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Text>
-      <ImageView fx:id="logoutImage" fitHeight="14.0" fitWidth="14.0" layoutX="782.0" layoutY="3.0" onMouseClicked="#logOut" pickOnBounds="true" preserveRatio="true" />
-      <Line endX="5.0" endY="-20.0" layoutX="773.0" layoutY="19.0" startX="5.0" />
-      <Line endX="-30.0" endY="-30.0" layoutX="783.0" layoutY="29.0" startX="-30.0" startY="-10.0" />
-      <ImageView fx:id="refreshImage" fitHeight="14.0" fitWidth="14.0" layoutX="759.0" layoutY="3.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true" />
-      <TextArea fx:id="recentTweets" editable="false" layoutY="440.0" prefHeight="159.0" prefWidth="800.0" />
-      <TableView fx:id="dbTable" layoutX="167.0" layoutY="20.0" prefHeight="420.0" prefWidth="633.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
+      <ImageView fx:id="logoutImage" fitHeight="14.0" fitWidth="14.0" layoutX="1183.0" layoutY="5.0" onMouseClicked="#logOut" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="refreshImage" fitHeight="14.0" fitWidth="14.0" layoutX="1161.0" layoutY="5.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true" />
+      <Line endX="5.0" endY="-20.0" layoutX="1173.0" layoutY="20.0" startX="5.0" startY="5.0" />
+      <Line endX="373.0" endY="-30.0" layoutX="783.0" layoutY="29.0" startX="373.0" startY="-5.0" />
+      <TextArea fx:id="recentTweets" editable="false" layoutY="641.0" prefHeight="160.0" prefWidth="1200.0" />
+      <TableView fx:id="dbTable" layoutX="170.0" layoutY="25.0" prefHeight="616.0" prefWidth="880.0">
+         <contextMenu>
+            <ContextMenu fx:id="tableMenu">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#set50Rows" text="View 50 rows" />
+                  <MenuItem mnemonicParsing="false" onAction="#set100Rows" text="View 100 rows" />
+                  <MenuItem mnemonicParsing="false" onAction="#setAllRows" text="View all rows" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
+      <TreeView fx:id="tableTree" layoutX="1050.0" layoutY="25.0" prefHeight="616.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

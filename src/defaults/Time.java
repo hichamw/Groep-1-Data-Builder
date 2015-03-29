@@ -18,7 +18,7 @@ public class Time {
 	// private SimpleDateFormat targetDateFormat = new SimpleDateFormat("HH:");
 
 	public void extractTimeFromDatabase(Database database) throws SQLException {
-		query = "SELECT SUBSTRING(Time, 12,  2) FROM Twitter ";
+		query = "SELECT SUBSTRING(Date, 12,  2) FROM message ";
 		result = database.retrieveData(query);
 
 		while (result.next()) {

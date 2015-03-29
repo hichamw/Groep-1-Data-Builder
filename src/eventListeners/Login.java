@@ -41,10 +41,11 @@ public class Login implements Initializable {
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eventListeners/Main.fxml"));
     		parent.setScene(new Scene((Pane) loader.load()));
+        	parent.centerOnScreen();
     		parent.setTitle("Databuilder");
-    		parent.show();
     		MainWindow controller = loader.<MainWindow>getController();
     		controller.setParent(parent);
+    		parent.show();
 
         } catch (IOException e) {
             e.printStackTrace();
