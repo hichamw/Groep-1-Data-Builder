@@ -1,6 +1,5 @@
 package defaults;
 import java.sql.SQLException;
-
 import eventListeners.Login;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +11,11 @@ import javafx.stage.Stage;
 public class Controller extends Application {
 
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException{
 		//Database database = new Database();
-		//Time time = new Time();
+		//DayCounter day = new DayCounter();
+		//day.extractDaysFromDatabase(database);
+		//TweetCounter time = new TweetCounter();
 		//time.extractTimeFromDatabase(database);
 		launch(args);
 
