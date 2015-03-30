@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.mysql.jdbc.ResultSetMetaData;
+import com.sun.prism.paint.Color;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,6 +20,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -35,12 +38,15 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import defaults.Database;
 import defaults.Language;
+import defaults.LanguageCounter;
 
 public class MainWindow implements Initializable {
 	private Stage parent;
 	private int limit = 50;
 	private Database database;
-	private ObservableList<ObservableList> data;
+	private ObservableList<ObservableList> tableData;
+	private ObservableList<Data> pieData;
+	private int menuIndex = 1;
 
 	@FXML
 	private TreeView<String> menuTree;
@@ -58,6 +64,8 @@ public class MainWindow implements Initializable {
 	private TableView dbTable;
 	@FXML
 	private ContextMenu tableMenu;
+	@FXML
+	private PieChart languagePie;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -65,7 +73,7 @@ public class MainWindow implements Initializable {
 		logoutImage.setImage(new Image("/img/logout.png"));
 		refreshImage.setImage(new Image("/img/refresh.png"));
 		fillTreeView();
-		createmenuTreeEvent();
+		createMenuTreeEvent();
 
 	}
 
@@ -130,7 +138,7 @@ public class MainWindow implements Initializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void createmenuTreeEvent() {
+	public void createMenuTreeEvent() {
 		menuTree.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener() {
 					@Override
@@ -151,6 +159,8 @@ public class MainWindow implements Initializable {
 							recentTweets.setVisible(true);
 							dbTable.setVisible(true);
 							tableTree.setVisible(true);
+							languagePie.setVisible(false);
+							menuIndex = 1;
 							break;
 
 						case 4:
@@ -163,6 +173,8 @@ public class MainWindow implements Initializable {
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
+							languagePie.setVisible(true);
+							menuIndex = 2;
 							break;
 
 						case 8:
@@ -175,6 +187,8 @@ public class MainWindow implements Initializable {
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
+							languagePie.setVisible(false);
+							menuIndex = 3;
 							break;
 
 						case 12:
@@ -187,6 +201,8 @@ public class MainWindow implements Initializable {
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
+							languagePie.setVisible(false);
+							menuIndex = 4;
 							break;
 
 						}
@@ -202,8 +218,25 @@ public class MainWindow implements Initializable {
 	}
 
 	public void refresh() throws SQLException {
-		retrieveTweets();
-		fillTableTree();
+		switch(menuIndex){
+		case 1:
+			retrieveTweets();
+			fillTableTree();
+			break;
+			
+		case 2:
+			fillLanguagePie();
+			break;
+			
+		case 3:
+			
+			break;			
+		case 4:
+		
+			break;
+		}
+
+		
 
 	}
 
@@ -236,18 +269,18 @@ public class MainWindow implements Initializable {
 		root.setExpanded(true);
 		tableTree.setRoot(root);
 		tableTree.setShowRoot(false);
-		createtableTreeEvent();
+		createTableTreeEvent();
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public void createtableTreeEvent() {
+	public void createTableTreeEvent() {
 		tableTree.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener() {
 					@Override
 					public void changed(ObservableValue arg0, Object arg1,
 							Object arg2) {
-						data = FXCollections.observableArrayList();
+						tableData = FXCollections.observableArrayList();
 						String selectedItem = tableTree.getSelectionModel()
 								.getSelectedItem().getValue();
 						String query;
@@ -306,9 +339,9 @@ public class MainWindow implements Initializable {
 
 								}
 
-								data.add(row);
+								tableData.add(row);
 							}
-							dbTable.setItems(data);
+							dbTable.setItems(tableData);
 
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
@@ -321,6 +354,24 @@ public class MainWindow implements Initializable {
 
 	}
 
+	public void fillLanguagePie() throws SQLException{
+		LanguageCounter languageCounter = new LanguageCounter();
+		languageCounter.extractLanguagesFromDatabase(database);
+		ArrayList<Language> languageList = languageCounter.getLanguageList();
+		pieData = FXCollections.observableArrayList();
+		for (Language langObject : languageList) {
+			pieData.add(new PieChart.Data(langObject.getName(), langObject.getCount()));
+			
+		}
+		languagePie.setTitle("Language piechart");
+		languagePie.setData(pieData);
+				
+
+	
+		
+		
+		
+	}
 
 	public void set50Rows() {
 		limit = 50;

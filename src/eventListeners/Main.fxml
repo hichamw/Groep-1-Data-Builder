@@ -23,8 +23,8 @@
       <ImageView fx:id="refreshImage" fitHeight="14.0" fitWidth="14.0" layoutX="1161.0" layoutY="5.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true" />
       <Line endX="5.0" endY="-20.0" layoutX="1173.0" layoutY="20.0" startX="5.0" startY="5.0" />
       <Line endX="373.0" endY="-30.0" layoutX="783.0" layoutY="29.0" startX="373.0" startY="-5.0" />
-      <TextArea fx:id="recentTweets" editable="false" layoutY="641.0" prefHeight="160.0" prefWidth="1200.0" />
-      <TableView fx:id="dbTable" layoutX="170.0" layoutY="25.0" prefHeight="616.0" prefWidth="880.0">
+      <TextArea fx:id="recentTweets" editable="false" layoutY="641.0" prefHeight="160.0" prefWidth="1200.0" visible="false" />
+      <TableView fx:id="dbTable" layoutX="170.0" layoutY="25.0" prefHeight="616.0" prefWidth="880.0" visible="false">
          <contextMenu>
             <ContextMenu fx:id="tableMenu">
               <items>
@@ -35,6 +35,7 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
-      <TreeView fx:id="tableTree" layoutX="1050.0" layoutY="25.0" prefHeight="616.0" prefWidth="150.0" />
+      <TreeView fx:id="tableTree" layoutX="1050.0" layoutY="25.0" prefHeight="616.0" prefWidth="150.0" visible="false" />
+      <PieChart fx:id="languagePie" layoutX="170.0" layoutY="26.0" prefHeight="616.0" prefWidth="1030.0" visible="false" />
    </children>
 </AnchorPane>

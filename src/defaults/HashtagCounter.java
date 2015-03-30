@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-public class Client {
+public class HashtagCounter {
 	private ArrayList<Hashtag> hashtags = new ArrayList<Hashtag>();
 	private ResultSet result;
 	private String query;

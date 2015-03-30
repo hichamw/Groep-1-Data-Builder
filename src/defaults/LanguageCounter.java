@@ -3,14 +3,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Data {
+public class LanguageCounter {
 	private ResultSet result;
 	private String query;
 	private ArrayList<Language> languageList = new ArrayList<Language>();
 	private ArrayList<String> info = new ArrayList<String>();
 
 	public void extractLanguagesFromDatabase(Database database) throws SQLException {
-		query = "SELECT Language FROM Twitter";
+		query = "SELECT Lang FROM twitter_user";
 		result = database.retrieveData(query);
 
 		while (result.next()) {
@@ -34,7 +34,6 @@ public class Data {
 			}
 
 		}
-		WriteLanguages();
 
 	}
 
