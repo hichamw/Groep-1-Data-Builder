@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -29,6 +30,8 @@ public class Login implements Initializable {
 	private TextField username;
 	@FXML
 	private PasswordField password;
+	@FXML
+	private Label error;
 	
 	
 	@Override
@@ -55,25 +58,21 @@ public class Login implements Initializable {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            Stage dialog = new Stage();
-            dialog.initStyle(StageStyle.UTILITY);
-            Scene scene = new Scene(new Group(new Text(25, 25, "Hello World!")));
-            dialog.setScene(scene);
-            dialog.show();
+            error.setText("Wachtwoord en/of gebruikersnaam verkeerd");
         }
-        try {
-        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eventListeners/Main.fxml"));
-    		parent.setScene(new Scene((Pane) loader.load()));
-        	parent.centerOnScreen();
-    		parent.setTitle("Databuilder");
-    		MainWindow controller = loader.<MainWindow>getController();
-    		controller.setParent(parent);
-    		parent.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+		if(loggedin){
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/eventListeners/Main.fxml"));
+				parent.setScene(new Scene((Pane) loader.load()));
+				parent.centerOnScreen();
+				parent.setTitle("Databuilder");
+				MainWindow controller = loader.<MainWindow>getController();
+				controller.setParent(parent);
+				parent.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
 	} 
 	
 	public void setParent(Stage stage){
