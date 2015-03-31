@@ -2,7 +2,12 @@ package eventListeners;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,13 +36,31 @@ public class Login implements Initializable {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	private Connection conn = null;
+	private boolean loggedin = false;
 	public void logIn(ActionEvent event){
-		if(username.getText().equals("lars")){
-			
-			 System.out.println("noice");
-		}
-		System.out.println(username.getText());
+		String host = "145.24.222.208:8124";
+		String DBName = "dataminers";
+		String user = username.getText();
+		String password1 = password.getText();
+		
+		String encPassword = URLEncoder.encode(password1);
+		try {
+            conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
+            System.out.println("Database connected!");
+            loggedin = true;
+           
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            Stage dialog = new Stage();
+            dialog.initStyle(StageStyle.UTILITY);
+            Scene scene = new Scene(new Group(new Text(25, 25, "Hello World!")));
+            dialog.setScene(scene);
+            dialog.show();
+        }
         try {
         	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eventListeners/Main.fxml"));
     		parent.setScene(new Scene((Pane) loader.load()));
@@ -51,7 +74,7 @@ public class Login implements Initializable {
             e.printStackTrace();
         }
 		
-	}
+	} 
 	
 	public void setParent(Stage stage){
 		
