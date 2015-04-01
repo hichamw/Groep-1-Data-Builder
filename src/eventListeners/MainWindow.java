@@ -281,8 +281,7 @@ public class MainWindow implements Initializable {
 					public void changed(ObservableValue arg0, Object arg1,
 							Object arg2) {
 						tableData = FXCollections.observableArrayList();
-						String selectedItem = tableTree.getSelectionModel()
-								.getSelectedItem().getValue();
+						String selectedItem = tableTree.getSelectionModel().getSelectedItem().getValue();
 						String query;
 						if (limit == 0) {
 							query = "SELECT * FROM " + selectedItem;

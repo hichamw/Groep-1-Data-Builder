@@ -2,7 +2,6 @@ package defaults;
 public class Language {
 	private String name;
 	private int count;
-	private int percentageCount;
 	
 	public String getName() {
 		return name;
@@ -18,12 +17,6 @@ public class Language {
 	}
 	public void increment(){
 		count++;
-	}
-	public int getPercentageCount() {
-		return percentageCount;
-	}
-	public void setPercentageCount(int percentageCount) {
-		this.percentageCount = percentageCount;
 	}
 	
 
