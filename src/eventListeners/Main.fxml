@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.paint.*?>
@@ -37,5 +38,16 @@
       </TableView>
       <TreeView fx:id="tableTree" layoutX="1050.0" layoutY="25.0" prefHeight="616.0" prefWidth="150.0" visible="false" />
       <PieChart fx:id="languagePie" layoutX="170.0" layoutY="26.0" prefHeight="616.0" prefWidth="1030.0" visible="false" />
+      <LineChart fx:id="graphChart" layoutX="170.0" layoutY="26.0" prefHeight="616.0" prefWidth="1030.0" visible="false">
+        <xAxis>
+          <NumberAxis fx:id="graphX" autoRanging="false" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="graphY" side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <WebView fx:id="googleMap" layoutX="170.0" layoutY="26.0" prefHeight="616.0" prefWidth="1030.0" visible="false" />
+      <ChoiceBox fx:id="locationChoice" layoutX="178.0" layoutY="667.0" onMouseClicked="#fillGoogleMap" prefWidth="150.0" visible="false" />
+      <Label fx:id="locationLabel" layoutX="178.0" layoutY="650.0" text="Zoom level:" visible="false" />
    </children>
 </AnchorPane>

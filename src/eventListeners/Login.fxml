@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -8,6 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="356.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventListeners.Login">
 	<children>
+      <ImageView fx:id="background" fitHeight="297.0" fitWidth="423.0" layoutX="-25.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true" />
 		<TextField fx:id="username" layoutX="104.0" layoutY="63.0" />
 		<Text layoutX="102.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
 		<Text layoutX="104.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />

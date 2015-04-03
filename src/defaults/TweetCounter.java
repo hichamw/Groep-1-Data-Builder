@@ -13,7 +13,7 @@ public class TweetCounter {
 	private ArrayList<String> info = new ArrayList<String>();
 
 	public void extractTimeFromDatabase(Database database) throws SQLException {
-		query = "SELECT SUBSTRING(Date, 12,  2) FROM message ";
+		query = "SELECT SUBSTRING(Date, 12,  2) FROM message";
 		result = database.retrieveData(query);
 
 		while (result.next()) {
@@ -35,7 +35,7 @@ public class TweetCounter {
 				timeList.add(t);
 			}
 		}
-		printOutTime();
+		//printOutTime();
 	}
 
 	public void printOutTime() {
@@ -48,5 +48,10 @@ public class TweetCounter {
 		}
 		System.out.println(" ");
 
+	}
+	
+	public ArrayList<Time> getTimeList(){
+		return timeList;		
+		
 	}
 }

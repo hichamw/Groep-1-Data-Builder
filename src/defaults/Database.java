@@ -12,12 +12,13 @@ public class Database {
 	private PreparedStatement statement;
 	private Connection conn = null;
 	private ResultSet result;
+	private String user;
+	private String password;
 	
 	public void connectToDatabase(){
 		String host = "145.24.222.208:8124";
 		String DBName = "dataminers";
-		String user = "Client";
-		String password = "databuilder";
+
 		String encPassword = URLEncoder.encode(password);
 		try {
             conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
@@ -46,6 +47,12 @@ public class Database {
 	public void closeConnection() throws SQLException{
 		
 		conn.close();
+	}
+	
+	public void setUser(String username, String password){
+		this.user = username;
+		this.password = password;
+		
 	}
 
 }

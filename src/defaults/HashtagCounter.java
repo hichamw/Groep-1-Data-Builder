@@ -59,5 +59,10 @@ public class HashtagCounter {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<Hashtag> getHashtags(){		
+		return hashtags;
+		
+	}
 
 }

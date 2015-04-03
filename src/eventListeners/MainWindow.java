@@ -1,5 +1,6 @@
 package eventListeners;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -15,14 +16,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -34,11 +41,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import defaults.Database;
 import defaults.Language;
 import defaults.LanguageCounter;
+import defaults.Time;
+import defaults.TweetCounter;
 
 public class MainWindow implements Initializable {
 	private Stage parent;
@@ -66,14 +77,36 @@ public class MainWindow implements Initializable {
 	private ContextMenu tableMenu;
 	@FXML
 	private PieChart languagePie;
+	@FXML
+	private LineChart<Number, Number> graphChart;
+	@FXML
+	private NumberAxis graphX,graphY;
+	@FXML
+	private WebView googleMap;
+	@FXML
+	private Label locationLabel;
+	@FXML
+	private ChoiceBox<String> locationChoice;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		database = new Database();
 		logoutImage.setImage(new Image("/img/logout.png"));
 		refreshImage.setImage(new Image("/img/refresh.png"));
 		fillTreeView();
 		createMenuTreeEvent();
+		ObservableList<String> cursors = FXCollections.observableArrayList("9","8","7","6", "5", "4", "3", "2", "1");
+		locationChoice.setItems(cursors);
+		locationChoice.valueProperty().set("8");
+		locationChoice.valueProperty().addListener(new ChangeListener<String>() {
+	        @Override public void changed(ObservableValue ov, String t, String t1) {
+	            try {
+					fillGoogleMap();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	          }    
+	      });
 
 	}
 
@@ -95,7 +128,7 @@ public class MainWindow implements Initializable {
 	public void fillTreeView() {
 		menuTree.setStyle("-fx-border-style: none; -fx-background-color:transparent;");
 		TreeItem<String> dummyRoot = new TreeItem<String>("hidden");
-		TreeItem<String> root = new TreeItem<String>("Hashtag Statistics");
+		TreeItem<String> root = new TreeItem<String>("Tweet locations");
 		TreeItem<String> root2 = new TreeItem<String>("Tweet Statistics");
 		TreeItem<String> root3 = new TreeItem<String>("Language Statistics");
 		TreeItem<String> root4 = new TreeItem<String>("Table view");
@@ -126,9 +159,9 @@ public class MainWindow implements Initializable {
 		);
 		root4.getChildren().addAll(
 
-		new TreeItem<String>("View statistics"),
-				new TreeItem<String>("about most used"),
-				new TreeItem<String>("twitter hashtags")
+		new TreeItem<String>("View the locations"),
+				new TreeItem<String>("of tweets on"),
+				new TreeItem<String>("Google maps")
 
 		);
 		menuTree.setRoot(dummyRoot);
@@ -160,6 +193,10 @@ public class MainWindow implements Initializable {
 							dbTable.setVisible(true);
 							tableTree.setVisible(true);
 							languagePie.setVisible(false);
+							graphChart.setVisible(false);
+							googleMap.setVisible(false);
+							locationLabel.setVisible(false);
+							locationChoice.setVisible(false);
 							menuIndex = 1;
 							break;
 
@@ -174,6 +211,10 @@ public class MainWindow implements Initializable {
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
 							languagePie.setVisible(true);
+							graphChart.setVisible(false);
+							googleMap.setVisible(false);
+							locationLabel.setVisible(false);
+							locationChoice.setVisible(false);
 							menuIndex = 2;
 							break;
 
@@ -188,6 +229,10 @@ public class MainWindow implements Initializable {
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
 							languagePie.setVisible(false);
+							graphChart.setVisible(true);
+							googleMap.setVisible(false);
+							locationLabel.setVisible(false);
+							locationChoice.setVisible(false);
 							menuIndex = 3;
 							break;
 
@@ -196,12 +241,16 @@ public class MainWindow implements Initializable {
 						case 14:
 						case 15:
 							menuTree.getSelectionModel().selectRange(12, 16);
-							tabTitle.setText("Hashtag Statistics");
+							tabTitle.setText("Tweet Locations");
 							recentTweets.setVisible(false);
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
 							languagePie.setVisible(false);
+							graphChart.setVisible(false);
+							googleMap.setVisible(true);
+							locationLabel.setVisible(true);
+							locationChoice.setVisible(true);
 							menuIndex = 4;
 							break;
 
@@ -218,25 +267,23 @@ public class MainWindow implements Initializable {
 	}
 
 	public void refresh() throws SQLException {
-		switch(menuIndex){
+		switch (menuIndex) {
 		case 1:
 			retrieveTweets();
 			fillTableTree();
 			break;
-			
+
 		case 2:
 			fillLanguagePie();
 			break;
-			
+
 		case 3:
-			
-			break;			
+			fillGraphChart();
+			break;
 		case 4:
-		
+			fillGoogleMap();
 			break;
 		}
-
-		
 
 	}
 
@@ -281,7 +328,8 @@ public class MainWindow implements Initializable {
 					public void changed(ObservableValue arg0, Object arg1,
 							Object arg2) {
 						tableData = FXCollections.observableArrayList();
-						String selectedItem = tableTree.getSelectionModel().getSelectedItem().getValue();
+						String selectedItem = tableTree.getSelectionModel()
+								.getSelectedItem().getValue();
 						String query;
 						if (limit == 0) {
 							query = "SELECT * FROM " + selectedItem;
@@ -327,7 +375,6 @@ public class MainWindow implements Initializable {
 
 								dbTable.getColumns().addAll(col);
 
-
 							}
 
 							while (result.next()) {
@@ -353,25 +400,67 @@ public class MainWindow implements Initializable {
 
 	}
 
-	public void fillLanguagePie() throws SQLException{
+	public void fillLanguagePie() throws SQLException {
 		LanguageCounter languageCounter = new LanguageCounter();
 		languageCounter.extractLanguagesFromDatabase(database);
 		ArrayList<Language> languageList = languageCounter.getLanguageList();
 		pieData = FXCollections.observableArrayList();
 		for (Language langObject : languageList) {
-			pieData.add(new PieChart.Data(langObject.getName(), langObject.getCount()));
-			
+			pieData.add(new PieChart.Data(langObject.getName(), langObject
+					.getCount()));
+
 		}
 		languagePie.setTitle("Language piechart");
 		languagePie.setData(pieData);
-				
 
-	
-		
-		
-		
 	}
 
+	@SuppressWarnings("unchecked")
+	public void fillGraphChart() throws SQLException {	
+		graphChart.getData().clear();
+		TweetCounter tweetCounter = new TweetCounter();
+		tweetCounter.extractTimeFromDatabase(database);
+		ArrayList<Time> timeList = tweetCounter.getTimeList();
+
+		graphChart.setTitle("Tweet count through time (hours) ");
+		graphX.setAutoRanging(false);
+		graphY.setAutoRanging(false);
+		
+		graphX.setLabel("Hours");
+		graphY.setLabel("Tweet count");
+		graphChart.setCreateSymbols(false);
+		graphY.setLowerBound(0);
+		graphX.setUpperBound(24);
+		graphX.setMinorTickCount(0);
+		graphX.setTickUnit(1);
+		
+        //creating the chart
+        
+        //defining a series
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Tweets");
+        //populating the series with data
+        for (Time list : timeList) {
+        	series.getData().add(new XYChart.Data(Integer.parseInt(list.getTime()), list.getCount()));
+        }
+
+        graphChart.getData().add(series);
+	}
+	
+	
+	public void fillGoogleMap() throws SQLException{
+		
+		String url = "http://maps.google.com/maps/api/staticmap?center=The_Netherlands&zoom=" + locationChoice.getValue() +"&size=1030x616&maptype=roadmap";
+		ResultSet result = database.retrieveData("SELECT Latitude, Longitude FROM message WHERE latitude <> 0");
+		while(result.next()){
+			url += "&markers=color:red|" + result.getString(1) + "," + result.getString(2);
+		}
+		url += "&sensor=false&key=AIzaSyAotNCsfaDSW4jCWp0N5g2jXSIS37FVb_k";
+		WebEngine webEngine = googleMap.getEngine();
+		webEngine.load(url);
+		
+	}
+	
 	public void set50Rows() {
 		limit = 50;
 
@@ -384,6 +473,11 @@ public class MainWindow implements Initializable {
 
 	public void setAllRows() {
 		limit = 0;
+
+	}
+
+	public void setDatabase(Database database) {
+		this.database = database;
 
 	}
 
