@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Controller extends Application {
 
-
+	//This is the main method, this launches the actual application 
 	public static void main(String[] args) throws SQLException{
 		//Database database = new Database();
 		//DayCounter day = new DayCounter();
@@ -23,7 +23,7 @@ public class Controller extends Application {
 		
 	}
 
-
+	//This method loads the stage and opens the login screen
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.getIcons().add(new Image("/img/icon.png"));

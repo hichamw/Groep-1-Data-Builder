@@ -11,6 +11,7 @@ public class HashtagCounter {
 	private String[] rawData;
 	private ArrayList<String> info = new ArrayList<String>();
 
+	//this method extracts tweets based on hashtags and stores it in an arraylist
 	public void extractHashtagsFromDatabase(Database database) throws SQLException {
 		query = "SELECT Content FROM message WHERE Content LIKE '%#%'";
 		result = database.retrieveData(query);

@@ -67,7 +67,8 @@ public class MainWindow implements Initializable {
 	private ObservableList<ObservableList> tableData;
 	private ObservableList<Data> pieData;
 	private int menuIndex = 1;
-
+	
+	//These variables represent the different items on the main window
 	@FXML
 	private TreeView<String> menuTree;
 	@FXML
@@ -103,6 +104,7 @@ public class MainWindow implements Initializable {
 	@FXML
 	private RadioButton radioHour, radioDay;
 
+	//This method sets the images for the icons and sets the piechart
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		logoutImage.setImage(new Image("/img/logout.png"));
@@ -138,7 +140,7 @@ public class MainWindow implements Initializable {
 	      });
 
 	}
-
+	//this method retrieves the tweets from the database
 	public void retrieveTweets() throws SQLException {
 		String query = "SELECT * FROM message ORDER BY Date DESC LIMIT 10";
 		ResultSet result = database.retrieveData(query);
@@ -152,7 +154,7 @@ public class MainWindow implements Initializable {
 		result.close();
 
 	}
-
+	//This method sets the names in the menubar 
 	@SuppressWarnings("unchecked")
 	public void fillTreeView() {
 		menuTree.setStyle("-fx-border-style: none; -fx-background-color:transparent;");
@@ -198,7 +200,7 @@ public class MainWindow implements Initializable {
 		menuTree.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 	}
-
+	//This method sets the visibility of the different menuitems, when a certain item is selected, the other ones are being hidden
 	@SuppressWarnings("unchecked")
 	public void createMenuTreeEvent() {
 		menuTree.getSelectionModel().selectedItemProperty()
@@ -316,11 +318,12 @@ public class MainWindow implements Initializable {
 				});
 
 	}
-
+	
 	public void setParent(Stage stage) {
 		this.parent = stage;
 	}
-
+	
+	//this is the refresh function, this executes different function dependent on the selected menuitem
 	public void refresh() throws SQLException {
 		switch (menuIndex) {
 		case 1:
@@ -352,7 +355,7 @@ public class MainWindow implements Initializable {
 		}
 
 	}
-
+	//this function logs out the user and returns to the login screen
 	public void logOut() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -369,7 +372,7 @@ public class MainWindow implements Initializable {
 		}
 
 	}
-
+	//
 	public void fillTableTree() throws SQLException {
 		String query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='dataminers'";
 		ResultSet result = database.retrieveData(query);
@@ -468,7 +471,8 @@ public class MainWindow implements Initializable {
 		
 
 	}
-
+	
+	//this function adds information to piechart to display
 	public void fillPie() throws SQLException {
 		if(pieChoice.getValue().equals("view Hashtag Piechart")){
 			HashtagCounter hashtagCounter = new HashtagCounter();
@@ -501,6 +505,7 @@ public class MainWindow implements Initializable {
 
 	}
 
+	//this function sets the information that is display in the hourly graph
 	@SuppressWarnings("unchecked")
 	public void fillHourGraph() throws SQLException {	
 		graphChart.getData().clear();
@@ -533,6 +538,8 @@ public class MainWindow implements Initializable {
 
         graphChart.getData().add(series);
 	}
+	
+	//this function sets the information that is display in the daily graph
 	public void fillDayGraph() throws SQLException{
 		graphChart2.getData().clear();
 		DayCounter dayCounter = new DayCounter();
@@ -565,7 +572,7 @@ public class MainWindow implements Initializable {
 		
 	}
 	
-	
+	//This function gets the location of the tweet and puts the value in a map
 	public void fillGoogleMap() throws SQLException{
 		
 		String url = "http://maps.google.com/maps/api/staticmap?center=Rotterdam&zoom=" + locationChoice.getValue() +"&size=1030x616&maptype=roadmap";
@@ -581,7 +588,7 @@ public class MainWindow implements Initializable {
 	}
 	
 
-	
+	//sets visibilities of the different items
 	public void onRadioButtonHour(){
 		startLabel.setVisible(false);
 		endLabel.setVisible(false);

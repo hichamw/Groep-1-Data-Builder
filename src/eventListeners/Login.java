@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 public class Login implements Initializable {
 	private Stage parent;
 	
+	//These variables represent the different items on the loginscreen
 	@FXML
 	private Button loginButton;
 	@FXML
@@ -42,7 +43,7 @@ public class Login implements Initializable {
 	private Connection conn = null;
 	private boolean loggedin = false;
 	
-	
+	//this sets the background of the loginscreen and makes a database object
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		background.setImage(new Image("/img/login_background.jpg"));
@@ -51,7 +52,7 @@ public class Login implements Initializable {
 		password.setText("databuilder");
 		
 	}
-
+	//This method connects to the database using the inputted username and password
 	public void logIn(ActionEvent event){
 		String host = "145.24.222.208:8124";
 		String DBName = "dataminers";
@@ -63,7 +64,8 @@ public class Login implements Initializable {
             conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
             System.out.println("Database connected!");
             loggedin = true;
-           
+            
+        //When there is an error a message is displayed on the loginscreen
         } catch (SQLException ex) {
             // handle any errors
             //System.out.println("SQLException: " + ex.getMessage());
@@ -71,6 +73,7 @@ public class Login implements Initializable {
             //System.out.println("VendorError: " + ex.getErrorCode());
             error.setText("Wachtwoord en/of gebruikersnaam verkeerd");
         }
+		//if the login has succeeded then it opens the main window
 		if(loggedin){
 			try {
 				database.setUser(user, passwordTemp);

@@ -2,6 +2,7 @@ package defaults;
 
 public class Day {
 	
+	//different getters and setters for the day view regarding the tweets
 	private int count;
 	private String days;
 

@@ -8,7 +8,8 @@ public class LanguageCounter {
 	private String query;
 	private ArrayList<Language> languageList = new ArrayList<Language>();
 	private ArrayList<String> info = new ArrayList<String>();
-
+	
+	//this method extracts tweets based on the language used, and counts how many tweets are sent using a specific language
 	public void extractLanguagesFromDatabase(Database database) throws SQLException {
 		query = "SELECT Lang FROM twitter_user";
 		result = database.retrieveData(query);

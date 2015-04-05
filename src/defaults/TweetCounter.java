@@ -12,6 +12,7 @@ public class TweetCounter {
 	private ArrayList<Time> timeList = new ArrayList<Time>();
 	private ArrayList<String> info = new ArrayList<String>();
 
+	//this class stores the time of the tweets sent and puts it in an arraylist
 	public void extractTimeFromDatabase(Database database) throws SQLException {
 		query = "SELECT SUBSTRING(Date, 12,  2) FROM message";
 		result = database.retrieveData(query);

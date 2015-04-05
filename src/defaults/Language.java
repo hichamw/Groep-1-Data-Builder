@@ -3,6 +3,8 @@ public class Language {
 	private String name;
 	private int count;
 	
+	//this class stores the values of the different languages used in tweets
+	
 	public String getName() {
 		return name;
 	}

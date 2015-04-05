@@ -4,7 +4,8 @@ public class Time {
 
 	private int count;
 	private String time;
-
+	
+	//this class stores information about the time of the tweets
 	public String getTime() {
 		return time;
 	}

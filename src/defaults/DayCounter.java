@@ -16,7 +16,8 @@ public class DayCounter {
 	//private String new_format = ("dd/MM/yyyy");
 	//private String oldDateString = ("dayList");
 	//private String newDateString;
-
+	
+	//this extracts the dates of the tweets and stores it in an arraylist
 	public void extractDaysFromDatabase(Database database, String startDate, String endDate) throws SQLException{
 		query = "SELECT SUBSTRING(Date, 1, 10) FROM message WHERE Date BETWEEN " + "'" + startDate + "'" + " AND " + "'" + endDate + "'";
 		result = database.retrieveData(query);

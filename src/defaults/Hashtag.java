@@ -1,6 +1,7 @@
 package defaults;
 public class Hashtag {
-
+	
+	//this class stores the values of the different hashtags used in tweets
 	private String name;
 	private int count;
 	private String date;

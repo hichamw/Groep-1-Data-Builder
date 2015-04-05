@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-
+//This class connects to the database using the URL, username and password
 public class Database {
 	private PreparedStatement statement;
 	private Connection conn = null;
