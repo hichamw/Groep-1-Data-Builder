@@ -20,6 +20,7 @@ public class TweetCounter {
 			info.add(result.getString(1));
 			Collections.sort(info);
 		}
+		database.closeConnection();
 		for (String time : info) {
 			boolean exists = false;
 			for (Time t : timeList) {

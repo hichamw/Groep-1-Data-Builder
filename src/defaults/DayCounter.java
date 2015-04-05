@@ -17,14 +17,15 @@ public class DayCounter {
 	//private String oldDateString = ("dayList");
 	//private String newDateString;
 
-	public void extractDaysFromDatabase(Database database) throws SQLException{
-		query = "SELECT SUBSTRING(Date, 1, 10) FROM message ";
+	public void extractDaysFromDatabase(Database database, String startDate, String endDate) throws SQLException{
+		query = "SELECT SUBSTRING(Date, 1, 10) FROM message WHERE Date BETWEEN " + "'" + startDate + "'" + " AND " + "'" + endDate + "'";
 		result = database.retrieveData(query);
 
 		while (result.next()) {
 			info.add(result.getString(1));
 			Collections.sort(info);
 		}
+		database.closeConnection();
 
 		for (String day : info) {
 			boolean exists = false;
@@ -53,5 +54,10 @@ public class DayCounter {
 		}
 		System.out.println(" ");
 
+	}
+	
+	public ArrayList<Day> getDayList(){
+		return dayList;
+			
 	}
 }

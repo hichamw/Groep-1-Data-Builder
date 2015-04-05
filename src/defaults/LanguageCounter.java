@@ -17,6 +17,7 @@ public class LanguageCounter {
 			info.add(result.getString(1));
 		}
 
+		database.closeConnection();
 		for (String lang : info) {
 			boolean exists = false;
 			for (Language langObject : languageList) {

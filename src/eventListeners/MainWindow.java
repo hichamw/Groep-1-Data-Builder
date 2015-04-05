@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
@@ -30,11 +31,15 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
@@ -46,6 +51,10 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import defaults.Database;
+import defaults.Day;
+import defaults.DayCounter;
+import defaults.Hashtag;
+import defaults.HashtagCounter;
 import defaults.Language;
 import defaults.LanguageCounter;
 import defaults.Time;
@@ -66,27 +75,33 @@ public class MainWindow implements Initializable {
 	@FXML
 	private Text tabTitle;
 	@FXML
-	private ImageView logoutImage;
-	@FXML
-	private ImageView refreshImage;
+	private ImageView logoutImage,refreshImage;
 	@FXML
 	private TextArea recentTweets;
+	@FXML
+	private TextField graph2Start, graph2End;
 	@FXML
 	private TableView dbTable;
 	@FXML
 	private ContextMenu tableMenu;
 	@FXML
-	private PieChart languagePie;
+	private PieChart pieChart;
 	@FXML
 	private LineChart<Number, Number> graphChart;
 	@FXML
-	private NumberAxis graphX,graphY;
+	private LineChart<String, Number> graphChart2;
+	@FXML
+	private NumberAxis graphX,graphY,graph2Y;
+	@FXML
+	private CategoryAxis graph2X;
 	@FXML
 	private WebView googleMap;
 	@FXML
-	private Label locationLabel;
+	private Label locationLabel, startLabel, endLabel;
 	@FXML
-	private ChoiceBox<String> locationChoice;
+	private ChoiceBox<String> locationChoice, pieChoice;
+	@FXML
+	private RadioButton radioHour, radioDay;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -94,13 +109,27 @@ public class MainWindow implements Initializable {
 		refreshImage.setImage(new Image("/img/refresh.png"));
 		fillTreeView();
 		createMenuTreeEvent();
-		ObservableList<String> cursors = FXCollections.observableArrayList("9","8","7","6", "5", "4", "3", "2", "1");
-		locationChoice.setItems(cursors);
+		ObservableList<String> zoomLevels = FXCollections.observableArrayList("9","8","7","6", "5", "4", "3", "2", "1");
+		locationChoice.setItems(zoomLevels);
 		locationChoice.valueProperty().set("8");
 		locationChoice.valueProperty().addListener(new ChangeListener<String>() {
 	        @Override public void changed(ObservableValue ov, String t, String t1) {
 	            try {
 					fillGoogleMap();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	          }    
+	      });
+		
+		ObservableList<String> pieSelection = FXCollections.observableArrayList("view Hashtag Piechart", "view Language Piechart");
+		pieChoice.setItems(pieSelection);
+		pieChoice.valueProperty().set("view Hashtag Piechart");
+		pieChoice.valueProperty().addListener(new ChangeListener<String>() {
+	        @Override public void changed(ObservableValue ov, String t, String t1) {
+	        	try {
+					fillPie();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -130,7 +159,7 @@ public class MainWindow implements Initializable {
 		TreeItem<String> dummyRoot = new TreeItem<String>("hidden");
 		TreeItem<String> root = new TreeItem<String>("Tweet locations");
 		TreeItem<String> root2 = new TreeItem<String>("Tweet Statistics");
-		TreeItem<String> root3 = new TreeItem<String>("Language Statistics");
+		TreeItem<String> root3 = new TreeItem<String>("Piecharts");
 		TreeItem<String> root4 = new TreeItem<String>("Table view");
 		dummyRoot.getChildren().addAll(root4, root3, root2, root);
 		root.setExpanded(true);
@@ -153,8 +182,8 @@ public class MainWindow implements Initializable {
 		root3.getChildren().addAll(
 
 		new TreeItem<String>("View statistics"),
-				new TreeItem<String>("about twitter-"),
-				new TreeItem<String>("users' language.")
+				new TreeItem<String>("language's and"),
+				new TreeItem<String>("hashtags")
 
 		);
 		root4.getChildren().addAll(
@@ -192,11 +221,19 @@ public class MainWindow implements Initializable {
 							recentTweets.setVisible(true);
 							dbTable.setVisible(true);
 							tableTree.setVisible(true);
-							languagePie.setVisible(false);
+							pieChart.setVisible(false);
+							pieChoice.setVisible(false);
 							graphChart.setVisible(false);
+							graphChart2.setVisible(false);
 							googleMap.setVisible(false);
 							locationLabel.setVisible(false);
 							locationChoice.setVisible(false);
+							radioDay.setVisible(false);
+							radioHour.setVisible(false);
+							graph2Start.setVisible(false);
+							graph2End.setVisible(false);
+							startLabel.setVisible(false);
+							endLabel.setVisible(false);
 							menuIndex = 1;
 							break;
 
@@ -205,16 +242,24 @@ public class MainWindow implements Initializable {
 						case 6:
 						case 7:
 							menuTree.getSelectionModel().selectRange(4, 8);
-							tabTitle.setText("Language Statistics");
+							tabTitle.setText("Piecharts");
 							recentTweets.setVisible(false);
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
-							languagePie.setVisible(true);
+							pieChart.setVisible(true);
+							pieChoice.setVisible(true);
 							graphChart.setVisible(false);
+							graphChart2.setVisible(false);
 							googleMap.setVisible(false);
 							locationLabel.setVisible(false);
 							locationChoice.setVisible(false);
+							radioDay.setVisible(false);
+							radioHour.setVisible(false);
+							graph2Start.setVisible(false);
+							graph2End.setVisible(false);
+							startLabel.setVisible(false);
+							endLabel.setVisible(false);
 							menuIndex = 2;
 							break;
 
@@ -228,11 +273,13 @@ public class MainWindow implements Initializable {
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
-							languagePie.setVisible(false);
-							graphChart.setVisible(true);
+							pieChart.setVisible(false);
+							pieChoice.setVisible(false);
 							googleMap.setVisible(false);
 							locationLabel.setVisible(false);
 							locationChoice.setVisible(false);
+							radioDay.setVisible(true);
+							radioHour.setVisible(true);
 							menuIndex = 3;
 							break;
 
@@ -246,11 +293,19 @@ public class MainWindow implements Initializable {
 							menuTree.setPrefHeight(800);
 							dbTable.setVisible(false);
 							tableTree.setVisible(false);
-							languagePie.setVisible(false);
+							pieChart.setVisible(false);
+							pieChoice.setVisible(false);
 							graphChart.setVisible(false);
+							graphChart2.setVisible(false);
 							googleMap.setVisible(true);
 							locationLabel.setVisible(true);
 							locationChoice.setVisible(true);
+							radioDay.setVisible(false);
+							radioHour.setVisible(false);
+							graph2Start.setVisible(false);
+							graph2End.setVisible(false);
+							startLabel.setVisible(false);
+							endLabel.setVisible(false);
 							menuIndex = 4;
 							break;
 
@@ -274,11 +329,22 @@ public class MainWindow implements Initializable {
 			break;
 
 		case 2:
-			fillLanguagePie();
+			fillPie();
 			break;
 
 		case 3:
-			fillGraphChart();
+			if(radioHour.isSelected()){
+			
+			graphChart2.setVisible(false);
+			graphChart.setVisible(true);
+			
+			fillHourGraph();
+			}
+			else{
+			graphChart.setVisible(false);
+			graphChart2.setVisible(true);
+			fillDayGraph();
+			}
 			break;
 		case 4:
 			fillGoogleMap();
@@ -387,6 +453,7 @@ public class MainWindow implements Initializable {
 
 								tableData.add(row);
 							}
+							database.closeConnection();
 							dbTable.setItems(tableData);
 
 						} catch (SQLException e) {
@@ -397,26 +464,45 @@ public class MainWindow implements Initializable {
 					}
 
 				});
+		
+		
 
 	}
 
-	public void fillLanguagePie() throws SQLException {
-		LanguageCounter languageCounter = new LanguageCounter();
-		languageCounter.extractLanguagesFromDatabase(database);
-		ArrayList<Language> languageList = languageCounter.getLanguageList();
-		pieData = FXCollections.observableArrayList();
-		for (Language langObject : languageList) {
-			pieData.add(new PieChart.Data(langObject.getName(), langObject
-					.getCount()));
+	public void fillPie() throws SQLException {
+		if(pieChoice.getValue().equals("view Hashtag Piechart")){
+			HashtagCounter hashtagCounter = new HashtagCounter();
+			hashtagCounter.extractHashtagsFromDatabase(database);
+			ArrayList<Hashtag> hashtagList = hashtagCounter.getHashtags();
+			pieData = FXCollections.observableArrayList();
+			for (Hashtag hashObject : hashtagList) {
+				pieData.add(new PieChart.Data(hashObject.getName(), hashObject.getCount()));
 
+			}
+			pieChart.setTitle("Hashtag piechart");
+			pieChart.setLegendVisible(false);
+			pieChart.setData(pieData);
 		}
-		languagePie.setTitle("Language piechart");
-		languagePie.setData(pieData);
+		else{
+			LanguageCounter languageCounter = new LanguageCounter();
+			languageCounter.extractLanguagesFromDatabase(database);
+			ArrayList<Language> languageList = languageCounter.getLanguageList();
+			pieData = FXCollections.observableArrayList();
+			for (Language langObject : languageList) {
+				pieData.add(new PieChart.Data(langObject.getName(), langObject
+						.getCount()));
+
+			}
+			pieChart.setTitle("Language piechart");
+			pieChart.setLegendVisible(true);
+			pieChart.setData(pieData);
+		}
+
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public void fillGraphChart() throws SQLException {	
+	public void fillHourGraph() throws SQLException {	
 		graphChart.getData().clear();
 		TweetCounter tweetCounter = new TweetCounter();
 		tweetCounter.extractTimeFromDatabase(database);
@@ -432,6 +518,7 @@ public class MainWindow implements Initializable {
 		graphY.setLowerBound(0);
 		graphX.setUpperBound(24);
 		graphX.setMinorTickCount(0);
+		graphX.setTranslateX(5);
 		graphX.setTickUnit(1);
 		
         //creating the chart
@@ -446,18 +533,68 @@ public class MainWindow implements Initializable {
 
         graphChart.getData().add(series);
 	}
+	public void fillDayGraph() throws SQLException{
+		graphChart2.getData().clear();
+		DayCounter dayCounter = new DayCounter();
+		dayCounter.extractDaysFromDatabase(database, graph2Start.getText(), graph2End.getText());
+		ArrayList<Day> dayList = dayCounter.getDayList();
+
+		graphChart2.setTitle("Tweet count through time (days)");
+		graph2X.setAutoRanging(true);
+		graph2Y.setAutoRanging(true);
+		
+		graph2X.setLabel("Days");
+		graph2Y.setLabel("Tweet count");
+		graphChart2.setCreateSymbols(false);
+		
+		//graph2X.setUpperBound(24);
+		//graph2X.setMinorTickCount(0);
+		//graph2X.setTickUnit(1);
+		
+        //creating the chart
+        
+        //defining a series
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Tweets");
+        //populating the series with data
+        for (Day list : dayList) {
+        	series.getData().add(new XYChart.Data(list.getDays().toString(), list.getCount()));
+        }
+
+        graphChart2.getData().add(series);
+		
+	}
 	
 	
 	public void fillGoogleMap() throws SQLException{
 		
-		String url = "http://maps.google.com/maps/api/staticmap?center=The_Netherlands&zoom=" + locationChoice.getValue() +"&size=1030x616&maptype=roadmap";
+		String url = "http://maps.google.com/maps/api/staticmap?center=Rotterdam&zoom=" + locationChoice.getValue() +"&size=1030x616&maptype=roadmap";
 		ResultSet result = database.retrieveData("SELECT Latitude, Longitude FROM message WHERE latitude <> 0");
 		while(result.next()){
 			url += "&markers=color:red|" + result.getString(1) + "," + result.getString(2);
 		}
+		database.closeConnection();
 		url += "&sensor=false&key=AIzaSyAotNCsfaDSW4jCWp0N5g2jXSIS37FVb_k";
 		WebEngine webEngine = googleMap.getEngine();
 		webEngine.load(url);
+		
+	}
+	
+
+	
+	public void onRadioButtonHour(){
+		startLabel.setVisible(false);
+		endLabel.setVisible(false);
+		graph2Start.setVisible(false);
+		graph2End.setVisible(false);
+		
+		
+	} 
+	public void onRadioButtonDay(){
+		startLabel.setVisible(true);
+		endLabel.setVisible(true);
+		graph2Start.setVisible(true);
+		graph2End.setVisible(true);
 		
 	}
 	
@@ -475,6 +612,7 @@ public class MainWindow implements Initializable {
 		limit = 0;
 
 	}
+
 
 	public void setDatabase(Database database) {
 		this.database = database;

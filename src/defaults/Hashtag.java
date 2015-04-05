@@ -3,6 +3,7 @@ public class Hashtag {
 
 	private String name;
 	private int count;
+	private String date;
 
 	public String getName() {
 		return name;
@@ -23,5 +24,15 @@ public class Hashtag {
 	public void increment() {
 		count++;
 
+	}
+
+	public String getDate() {
+		// TODO Auto-generated method stub
+		return date;
+	}
+	
+	public void setDate(String date) {
+		// TODO Auto-generated method stub
+		this.date = date;
 	}
 }

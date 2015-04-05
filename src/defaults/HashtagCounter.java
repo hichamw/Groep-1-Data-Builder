@@ -12,21 +12,22 @@ public class HashtagCounter {
 	private ArrayList<String> info = new ArrayList<String>();
 
 	public void extractHashtagsFromDatabase(Database database) throws SQLException {
-		query = "SELECT Content FROM Twitter WHERE Content LIKE '%#%'";
+		query = "SELECT Content FROM message WHERE Content LIKE '%#%'";
 		result = database.retrieveData(query);
 
 		try {
 			while (result.next()) {
-				rawData = result.getString(1).split("[\\s]");
+				rawData = result.getString(1).toLowerCase().split("[\\s]");
 				for (int i = 0; i < rawData.length; i++) {
 					info.add(rawData[i]);
 				}
 
 			}
-
+			
+			database.closeConnection();
 			info.removeIf(new Predicate<String>() {
-				public boolean test(String lang) {
-					return !(lang.startsWith("#"));
+				public boolean test(String hash) {
+					return !(hash.startsWith("#")) ||hash.startsWith("#euromast") || hash.startsWith("#Euromast");
 				}
 			});
 
@@ -47,12 +48,12 @@ public class HashtagCounter {
 				}
 			}
 
-			for (Hashtag tag : hashtags) {
-				System.out.println(tag.getName());
-				System.out.println(tag.getCount());
-				System.out.println();
-
-			}
+//			for (Hashtag tag : hashtags) {
+//				System.out.println(tag.getName());
+//				System.out.println(tag.getCount());
+//				System.out.println();
+//
+//			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
