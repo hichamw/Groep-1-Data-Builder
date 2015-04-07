@@ -57,8 +57,8 @@ import defaults.Hashtag;
 import defaults.HashtagCounter;
 import defaults.Language;
 import defaults.LanguageCounter;
-import defaults.Time;
-import defaults.TweetCounter;
+import defaults.Hour;
+import defaults.HourCounter;
 
 public class MainWindow implements Initializable {
 	private Stage parent;
@@ -111,7 +111,7 @@ public class MainWindow implements Initializable {
 		refreshImage.setImage(new Image("/img/refresh.png"));
 		fillTreeView();
 		createMenuTreeEvent();
-		ObservableList<String> zoomLevels = FXCollections.observableArrayList("9","8","7","6", "5", "4", "3", "2", "1");
+		ObservableList<String> zoomLevels = FXCollections.observableArrayList("15", "14","13","12","11","10","9","8","7","6", "5", "4", "3", "2", "1");
 		locationChoice.setItems(zoomLevels);
 		locationChoice.valueProperty().set("8");
 		locationChoice.valueProperty().addListener(new ChangeListener<String>() {
@@ -509,9 +509,9 @@ public class MainWindow implements Initializable {
 	@SuppressWarnings("unchecked")
 	public void fillHourGraph() throws SQLException {	
 		graphChart.getData().clear();
-		TweetCounter tweetCounter = new TweetCounter();
+		HourCounter tweetCounter = new HourCounter();
 		tweetCounter.extractTimeFromDatabase(database);
-		ArrayList<Time> timeList = tweetCounter.getTimeList();
+		ArrayList<Hour> timeList = tweetCounter.getTimeList();
 
 		graphChart.setTitle("Tweet count through time (hours) ");
 		graphX.setAutoRanging(false);
@@ -532,7 +532,7 @@ public class MainWindow implements Initializable {
         XYChart.Series series = new XYChart.Series();
         series.setName("Tweets");
         //populating the series with data
-        for (Time list : timeList) {
+        for (Hour list : timeList) {
         	series.getData().add(new XYChart.Data(Integer.parseInt(list.getTime()), list.getCount()));
         }
 
@@ -548,8 +548,10 @@ public class MainWindow implements Initializable {
 
 		graphChart2.setTitle("Tweet count through time (days)");
 		graph2X.setAutoRanging(true);
-		graph2Y.setAutoRanging(true);
+		graph2Y.setAutoRanging(false);
 		
+		graph2Y.setLowerBound(0);
+		graph2Y.setUpperBound(200);
 		graph2X.setLabel("Days");
 		graph2Y.setLabel("Tweet count");
 		graphChart2.setCreateSymbols(false);

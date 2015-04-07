@@ -1,6 +1,6 @@
 package defaults;
 
-public class Time {
+public class Hour {
 
 	private int count;
 	private String time;

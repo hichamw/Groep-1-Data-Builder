@@ -48,7 +48,7 @@
       </LineChart>
       <WebView fx:id="googleMap" layoutX="170.0" layoutY="26.0" prefHeight="616.0" prefWidth="1030.0" visible="false" />
       <ChoiceBox fx:id="locationChoice" layoutX="178.0" layoutY="667.0" onMouseClicked="#fillGoogleMap" prefWidth="150.0" visible="false" />
-      <Label fx:id="locationLabel" layoutX="178.0" layoutY="650.0" text="Zoom level:" visible="false" />
+      <Label fx:id="locationLabel" layoutX="178.0" layoutY="646.0" text="Zoom level:" visible="false" />
       <RadioButton fx:id="radioHour" layoutX="200.0" layoutY="672.0" mnemonicParsing="false" onAction="#onRadioButtonHour" selected="true" text="Tweets per hour" visible="false">
          <toggleGroup>
             <ToggleGroup fx:id="tweetSelection" />
@@ -63,10 +63,10 @@
             <NumberAxis fx:id="graph2Y" side="LEFT" />
          </yAxis>
       </LineChart>
-      <Label fx:id="startLabel" layoutX="328.0" layoutY="672.0" text="Start date:" visible="false" />
-      <Label fx:id="endLabel" layoutX="535.0" layoutY="671.0" text="End date:" visible="false" />
-      <TextField fx:id="graph2Start" layoutX="328.0" layoutY="691.0" promptText="2015-04-01" visible="false" />
-      <TextField fx:id="graph2End" layoutX="536.0" layoutY="691.0" promptText="2015-04-30" visible="false" />
+      <Label fx:id="startLabel" layoutX="611.0" layoutY="672.0" text="Start date:" visible="false" />
+      <Label fx:id="endLabel" layoutX="818.0" layoutY="671.0" text="End date:" visible="false" />
+      <TextField fx:id="graph2Start" layoutX="611.0" layoutY="691.0" promptText="2015-04-01" visible="false" />
+      <TextField fx:id="graph2End" layoutX="819.0" layoutY="691.0" promptText="2015-04-30" visible="false" />
       <ChoiceBox fx:id="pieChoice" layoutX="549.0" layoutY="677.0" prefHeight="25.0" prefWidth="230.0" visible="false" />
    </children>
 </AnchorPane>

@@ -5,11 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TweetCounter {
+public class HourCounter {
 
 	private ResultSet result;
 	private String query;
-	private ArrayList<Time> timeList = new ArrayList<Time>();
+	private ArrayList<Hour> timeList = new ArrayList<Hour>();
 	private ArrayList<String> info = new ArrayList<String>();
 
 	//this class stores the time of the tweets sent and puts it in an arraylist
@@ -24,14 +24,14 @@ public class TweetCounter {
 		database.closeConnection();
 		for (String time : info) {
 			boolean exists = false;
-			for (Time t : timeList) {
+			for (Hour t : timeList) {
 				if (time.equals(t.getTime())) {
 					t.increment();
 					exists = true;
 				}
 			}
 			if (!exists) {
-				Time t = new Time();
+				Hour t = new Hour();
 				t.setTime(time);
 				t.setCount(1);
 				timeList.add(t);
@@ -41,7 +41,7 @@ public class TweetCounter {
 	}
 
 	public void printOutTime() {
-		for (Time list : timeList) {
+		for (Hour list : timeList) {
 			String a = " ";
 			String y = list.getTime();
 			System.out.println("Tussen:" + a + y + ":00" + a + "en" + a + y
@@ -52,7 +52,7 @@ public class TweetCounter {
 
 	}
 	
-	public ArrayList<Time> getTimeList(){
+	public ArrayList<Hour> getTimeList(){
 		return timeList;		
 		
 	}

@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class Controller extends Application {
+public class Start extends Application {
 
 	//This is the main method, this launches the actual application 
 	public static void main(String[] args) throws SQLException{

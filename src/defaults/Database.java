@@ -22,7 +22,7 @@ public class Database {
 		String encPassword = URLEncoder.encode(password);
 		try {
             conn = DriverManager.getConnection("jdbc:mysql://" + host +"/"+ DBName +"?user=" + user + "&password=" + encPassword + "");
-            System.out.println("Database connected!");
+            //System.out.println("Database connected!");
            
         } catch (SQLException ex) {
             // handle any errors

@@ -43,7 +43,7 @@ public class DayCounter {
 				dayList.add(d);
 			}
 		}
-		printOutTime();
+		//printOutTime();
 	}
 
 	public void printOutTime(){
